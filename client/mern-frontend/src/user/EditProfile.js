@@ -45,6 +45,7 @@ const EditProfile = ({ match }) => {
     redirectToProfile: false,
   });
   const jwt = auth.isAuthenticated();
+
   useEffect(() => {
     const abortController = new AbortController();
     const signal = abortController.signal;
@@ -63,27 +64,35 @@ const EditProfile = ({ match }) => {
   }, [match.params.userId]);
 
   const clickSubmit = () => {
+    const jwt = auth.isAuthenticated();
     const user = {
       name: values.name || undefined,
       email: values.email || undefined,
       password: values.password || undefined,
     };
-    update({ userId: match.params.userId }, { t: jwt.token }, user).then(
-      (data) => {
-        if (data && data.error) {
-          setValues({ ...values, error: data.error });
-        } else {
-          setValues({ ...values, userId: data._id, redirectToProfile: true });
-        }
+    update(
+      {
+        userId: match.params.userId,
+      },
+      {
+        t: jwt.token,
+      },
+      user
+    ).then((data) => {
+      if (data && data.error) {
+        setValues({ ...values, error: data.error });
+      } else {
+        setValues({ ...values, userId: data._id, redirectToProfile: true });
       }
-    );
+    });
   };
 
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
   };
 
-  if (values.redirectToProfile) return <Redirect to={"/user/"} />;
+  if (values.redirectToProfile)
+    return <Redirect to={"/user/" + values.userId} />;
   return (
     <Card className={classes.card}>
       <CardContent>
@@ -94,7 +103,7 @@ const EditProfile = ({ match }) => {
           id="name"
           label="Name"
           className={classes.textField}
-          value={values.email}
+          value={values.name}
           onChange={handleChange("name")}
           margin="normal"
         />

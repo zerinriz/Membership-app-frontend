@@ -20,7 +20,13 @@ const DeleteUser = (props) => {
   const handleRequestClose = () => setOpen(false);
 
   const deleteAccount = () => {
-    remove({ userId: props.userId }, { t: jwt.token }).then((data) => {
+    const jwt = auth.isAuthenticated();
+    remove(
+      {
+        userId: props.userId,
+      },
+      { t: jwt.token }
+    ).then((data) => {
       if (data && data.error) {
         console.log(data.error);
       } else {
@@ -58,5 +64,8 @@ const DeleteUser = (props) => {
   );
 };
 
-DeleteUser.propTypes = { userId: PropTypes.string.isRequired };
+DeleteUser.propTypes = {
+  userId: PropTypes.string.isRequired,
+};
+
 export default DeleteUser;

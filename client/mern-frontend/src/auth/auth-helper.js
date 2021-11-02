@@ -8,8 +8,8 @@ function isAuthenticated() {
   if (!sessionStorage.getItem("token")) return false;
   return JSON.parse(sessionStorage.getItem("token"));
 }
-function clearToken(callback) {
+function clearJWT(callback) {
   if (typeof window !== "undefined") sessionStorage.removeItem("token");
   callback();
 }
-export default { authenticate, isAuthenticated, clearToken };
+export default { authenticate, isAuthenticated, clearJWT };

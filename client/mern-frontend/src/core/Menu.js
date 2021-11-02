@@ -52,7 +52,7 @@ const Menu = ({ history }) => (
           <Button
             color="inherit"
             onClick={() => {
-              auth.clearToken(() => history.push("/"));
+              auth.clearJWT(() => history.push("/"));
             }}
           >
             Sign out
